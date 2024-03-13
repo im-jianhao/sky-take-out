@@ -1,16 +1,20 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -28,7 +33,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 员工登录
      * @param employeeLoginDTO
-     * @return
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
@@ -88,4 +92,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.insert(employee);
     }
 
+    /**
+     * 实现员工的分页查询功能。
+     * @param employeePageQueryDTO 包含分页信息和查询条件的DTO（数据传输对象）。
+     * @return 返回一个PageResult对象，其中包含查询到的员工信息列表和总记录数。
+     */
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        // 使用PageHelper进行分页初始化，根据传入的页码和每页大小
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+        // 调用mapper层执行分页查询
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+        // 对查询结果进行封装，获取总记录数和查询结果列表
+        long total = page.getTotal();
+        List<Employee> result = page.getResult();
+
+        // 返回封装好的分页查询结果
+        return new PageResult(total, result);
+    }
+
+    public void starOrStop(Integer status, Long id) {
+        // Employee employee = new Employee();
+        // employee.setId(id);
+        // employee.setStatus(status);
+        Employee employee = Employee.builder().status(status).id(id).build();
+        employeeMapper.update(employee);
+    }
 }
