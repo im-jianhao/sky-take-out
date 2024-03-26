@@ -114,4 +114,26 @@ public class EmployeeController {
         employeeService.starOrStop(status, id);
         return Result.success();
     }
+
+    /**
+     * 员工详情查询
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("员工详情查询")
+    public Result getDetailById(@PathVariable Long id) {
+        log.info("员工详情查询参数：{}", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping("/update")
+    @ApiOperation("员工编辑")
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("员工编辑参数：{}", employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
+
 }

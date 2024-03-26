@@ -110,11 +110,46 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult(total, result);
     }
 
+    /**
+     * 根据提供的状态和员工ID，更新员工的状态。
+     * @param status 员工的新状态，1 代表启用，0 代表停用。
+     * @param id     员工的唯一标识符。
+     */
     public void starOrStop(Integer status, Long id) {
-        // Employee employee = new Employee();
-        // employee.setId(id);
-        // employee.setStatus(status);
+        // 使用Builder模式构建Employee对象，以设置新的状态和ID
         Employee employee = Employee.builder().status(status).id(id).build();
+        employeeMapper.update(employee);  // 调用mapper层执行更新操作
+    }
+
+
+    /**
+     * 根据员工ID查询员工信息。
+     * @param id 员工的唯一标识符。
+     * @return 返回查询到的员工信息。
+     */
+    public Employee getById(Long id) {
+        return employeeMapper.getById(id);
+    }
+
+    /**
+     * 根据提供的员工信息DTO，更新员工信息。
+     * @param employeeDTO 包含员工信息的DTO（数据传输对象）。
+     */
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        Long currentId = BaseContext.getCurrentId();
+
+        // 对象属性拷贝
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        // 设置当前记录的修改时间
+        employee.setUpdateTime(LocalDateTime.now());
+
+        // 设置当前记录修改人
+        employee.setUpdateUser(currentId);
+
+        // 调用持久层，更新数据
         employeeMapper.update(employee);
     }
+
 }
