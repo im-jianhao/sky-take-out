@@ -46,9 +46,9 @@ public class CategoryServiceImpl implements CategoryService {
         // 设置属性
         BeanUtils.copyProperties(categoryDTO, category);
         // 设置修改人id
-        category.setUpdateUser(id);
+        // category.setUpdateUser(id);
         // 设置修改时间
-        category.setUpdateTime(LocalDateTime.now());
+        // category.setUpdateTime(LocalDateTime.now());
         categoryMapper.update(category);
 
     }
@@ -84,10 +84,10 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
         category.setStatus(StatusConstant.DISABLE);
-        category.setCreateTime(LocalDateTime.now());
-        category.setUpdateTime(LocalDateTime.now());
-        category.setCreateUser(BaseContext.getCurrentId());
-        category.setUpdateUser(BaseContext.getCurrentId());
+        // category.setCreateTime(LocalDateTime.now());
+        // category.setUpdateTime(LocalDateTime.now());
+        // category.setCreateUser(BaseContext.getCurrentId());
+        // category.setUpdateUser(BaseContext.getCurrentId());
 
         categoryMapper.insert(category);
     }

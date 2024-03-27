@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
-import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -21,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -69,7 +67,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     public void save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
-        Long currentId = BaseContext.getCurrentId();
 
         // 对象属性拷贝
         BeanUtils.copyProperties(employeeDTO, employee);
@@ -81,12 +78,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
         // 设置当前记录的创建时间和修改时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        // employee.setCreateTime(LocalDateTime.now());
+        // employee.setUpdateTime(LocalDateTime.now());
 
         // 设置当前记录创建人以及修改人
-        employee.setCreateUser(currentId);
-        employee.setUpdateUser(currentId);
+        // employee.setCreateUser(currentId);
+        // employee.setUpdateUser(currentId);
 
         // 调用持久层，插入数据
         employeeMapper.insert(employee);
@@ -137,16 +134,15 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
-        Long currentId = BaseContext.getCurrentId();
 
         // 对象属性拷贝
         BeanUtils.copyProperties(employeeDTO, employee);
 
         // 设置当前记录的修改时间
-        employee.setUpdateTime(LocalDateTime.now());
+        // employee.setUpdateTime(LocalDateTime.now());
 
         // 设置当前记录修改人
-        employee.setUpdateUser(currentId);
+        // employee.setUpdateUser(currentId);
 
         // 调用持久层，更新数据
         employeeMapper.update(employee);
