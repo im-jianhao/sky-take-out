@@ -11,5 +11,5 @@ public interface SetmealDishMapper {
      * @return
      */
     @Select("select setmeal_id from setmeal_dish where dish_id = #{dishId}")
-    Long getSetmealIdByDishId(Integer dishId);
+    Long getSetmealIdByDishId(Long dishId);
 }

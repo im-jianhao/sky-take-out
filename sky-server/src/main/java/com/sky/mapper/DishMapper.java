@@ -28,9 +28,9 @@ public interface DishMapper {
 
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
-    @Select("select * from dish where id = #{id}")
-    Dish getById(Integer id);
+    @Select("select d.*, c.name as categoryName from dish d left join category c on d.category_id = c.id where d.id = #{id}")
+    DishVO getById(Long id);
 
     @Delete("delete from dish where id = #{id}")
-    void deleteById(Integer id);
+    void deleteById(Long id);
 }
